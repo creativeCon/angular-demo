@@ -6,7 +6,13 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./customers-list.component.scss']
 })
 export class CustomersListComponent implements OnInit {
-  @Input() customers: any[]; 
+  private _customers: any[] = [];
+  @Input() set customers(customers) {
+    if(customers && customers.length){
+      this.filteredCustomers = this._customers = customers;
+      this.calculateOrders();
+    }
+  } 
 
   filteredCustomers: any[] = [];
   customersOrderTotal: number;
@@ -15,9 +21,7 @@ export class CustomersListComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.customers);
-    this.filteredCustomers = this.customers;
-    this.calculateOrders();
+  
   }
 
   calculateOrders() {
@@ -30,13 +34,14 @@ export class CustomersListComponent implements OnInit {
   filterList(data) {
     const regex = new RegExp(data, 'i');
     if (data) {
-      this.filteredCustomers = this.customers.filter((cust: any) => {
+      this.filteredCustomers = this._customers.filter((cust: any) => {
           return cust.name.match(regex)
       });
       this.calculateOrders();
     } 
     else {
-      this.filteredCustomers = this.customers;
+      this.filteredCustomers = this._customers;
+      this.calculateOrders();
     }
   }
 
