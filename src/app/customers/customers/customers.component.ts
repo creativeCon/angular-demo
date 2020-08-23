@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { DataService } from '../../service/data.service'
 
@@ -10,7 +10,7 @@ import { DataService } from '../../service/data.service'
 export class CustomersComponent implements OnInit {
   people: any[] = [];
 
-  constructor(private dataService: DataService, private _cd: ChangeDetectorRef) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
     this.getCustomersList();
@@ -26,8 +26,6 @@ export class CustomersComponent implements OnInit {
   getCustomersList(){
     this.dataService.getCustomers().subscribe((res: any) => {
       this.people = res.data;
-      console.log(this.people);
-      this._cd.detectChanges();
     });
   }
 
